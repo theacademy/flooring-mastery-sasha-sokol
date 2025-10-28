@@ -2,6 +2,7 @@ package com.flooringmastery.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import com.flooringmastery.dto.Order;
 import com.flooringmastery.dto.Product;
@@ -22,8 +23,12 @@ public interface FlooringMasteryService {
 
     public List<Order> getOrdersByDate(String date);
 
+    public Optional<Order> getSingleOrder(String date, int orderNumber);
+
     public void calculateMissingFields(Order order);
 
     public void createOrder(Order order);
+
+    public void updateOrder(Order order);
 
 }
