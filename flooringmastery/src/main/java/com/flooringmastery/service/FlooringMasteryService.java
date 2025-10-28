@@ -31,4 +31,6 @@ public interface FlooringMasteryService {
 
     public void updateOrder(Order order);
 
+    public void deleteOrder(Order order);
+
 }

@@ -273,7 +273,43 @@ public class FlooringMasteryController {
     }
 
     private void removeOrder() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        view.removeOrderHeader();
+
+        String date;
+        int orderNumber;
+        Order order = null;
+
+        // Date
+        boolean finished = false;
+        do {
+            date = view.getDate();
+            var response = service.validateExistingOrderDate(date);
+            if (response.valid) {
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        // Order number
+        finished = false;
+        do {
+            orderNumber = view.getOrderNumber();
+            var response = service.getSingleOrder(date, orderNumber);
+            if (response.isPresent()) {
+                order = response.get();
+                finished = true;
+            }
+            else {
+                view.displayError("No order with that number exists.");
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        if (view.confirmRemoveOrder(order))
+            service.deleteOrder(order);
     }
 
     private void exportData() {
