@@ -88,7 +88,7 @@ public class FlooringMasteryView {
     }
 
     public BigDecimal getArea() {
-        return io.readDecimal("Enter area (in sq ft)", new BigDecimal(0), new BigDecimal(100));
+        return io.readDecimal("Enter area (in sq ft)");
     }
 
 }

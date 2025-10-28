@@ -1,11 +1,13 @@
 package com.flooringmastery.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.flooringmastery.dto.Order;
+import com.flooringmastery.dto.Product;
 import com.flooringmastery.service.FlooringMasteryService;
 import com.flooringmastery.service.ValidationResponse;
 import com.flooringmastery.view.FlooringMasteryView;
@@ -73,7 +75,76 @@ public class FlooringMasteryController {
     }
 
     private void addOrder() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        view.addOrderHeader();
+
+        String date;
+        String name;
+        String stateAbbr;
+        Product product;
+        BigDecimal area;
+        
+        // Order date
+        boolean finished = false;
+        do {
+            date = view.getDate();
+            var response = service.validateNewOrderDate(date);
+            if (response.valid) {
+
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        // Customer name
+        finished = false;
+        do {
+            name = view.getName();
+            var response = service.validateCustomerName(name);
+            if (response.valid) {
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        // State
+        finished = false;
+        do {
+            stateAbbr = view.getStateAbbr();
+            var response = service.validateStateAbbr(stateAbbr);
+            if (response.valid) {
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        // Product type
+        List<Product> products = ?;
+        product = view.chooseProductType(products);
+
+        // Area
+        finished = false;
+        do {
+            area = view.getArea();
+            var response = service.validateArea(area);
+            if (response.valid) {
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+
     }
 
     private void editOrder() {
