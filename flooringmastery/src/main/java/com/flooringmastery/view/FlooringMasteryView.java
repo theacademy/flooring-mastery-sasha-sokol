@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.flooringmastery.dto.Order;
 import com.flooringmastery.dto.Product;
 
 @Component
@@ -56,6 +57,10 @@ public class FlooringMasteryView {
     public boolean askCancel() {
         var response = io.readString("Type \"Y\" to try again, or leave blank to cancel the operation");
         return (response.isBlank());
+    }
+
+    public void displayOrderList(List<Order> orders) {
+        // Display list of orders
     }
 
     public String getDate() {

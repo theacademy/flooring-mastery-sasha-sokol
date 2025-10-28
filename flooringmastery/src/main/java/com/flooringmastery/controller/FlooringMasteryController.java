@@ -1,8 +1,13 @@
 package com.flooringmastery.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.flooringmastery.dto.Order;
+import com.flooringmastery.service.FlooringMasteryService;
+import com.flooringmastery.service.ValidationResponse;
 import com.flooringmastery.view.FlooringMasteryView;
 
 @Component
@@ -10,6 +15,9 @@ public class FlooringMasteryController {
 
     @Autowired
     private FlooringMasteryView view;
+
+    @Autowired
+    private FlooringMasteryService service;
 
     public void run() {
         while (true) {
@@ -43,7 +51,25 @@ public class FlooringMasteryController {
     }
 
     private void displayOrders() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        view.displayOrdersHeader();
+
+        String date;
+
+        boolean finished = false;
+        do {
+            date = view.getDate();
+            var response = service.validateExistingOrderDate(date);
+            if (response.valid) {
+                finished = true;
+            }
+            else {
+                view.displayError(response.message);
+                if (view.askCancel()) return;
+            }
+        } while (!finished);
+
+        List<Order> orders = service.getOrdersByDate(date);
+        view.displayOrderList(orders);
     }
 
     private void addOrder() {
