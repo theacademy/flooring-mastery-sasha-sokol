@@ -22,4 +22,8 @@ public interface FlooringMasteryService {
 
     public List<Order> getOrdersByDate(String date);
 
+    public void calculateMissingFields(Order order);
+
+    public void createOrder(Order order);
+
 }

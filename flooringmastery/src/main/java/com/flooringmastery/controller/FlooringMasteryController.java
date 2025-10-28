@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.flooringmastery.dto.Order;
 import com.flooringmastery.dto.Product;
 import com.flooringmastery.service.FlooringMasteryService;
-import com.flooringmastery.service.ValidationResponse;
 import com.flooringmastery.view.FlooringMasteryView;
 
 @Component
@@ -127,7 +126,7 @@ public class FlooringMasteryController {
         } while (!finished);
 
         // Product type
-        List<Product> products = ?;
+        List<Product> products = service.getAllProducts();
         product = view.chooseProductType(products);
 
         // Area
@@ -144,7 +143,18 @@ public class FlooringMasteryController {
             }
         } while (!finished);
 
+        Order order = new Order();
+        order.setDate(date);
+        order.setCustomerName(name);
+        order.setStateAbbr(stateAbbr);
+        order.setProductType(product);
+        order.setArea(area);
 
+        service.calculateMissingFields(order);
+
+        view.confirmAddOrder(order);
+
+        service.createOrder(order);
     }
 
     private void editOrder() {

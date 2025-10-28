@@ -63,6 +63,13 @@ public class FlooringMasteryView {
         // Display list of orders
     }
 
+    public boolean confirmAddOrder(Order order) {
+        // Display order
+
+        var response = io.readString("Type \"Y\" to confirm order creation, or leave blank to cancel the operation");
+        return (!response.isBlank());
+    }
+
     public String getDate() {
         return io.readString("Enter date (MMDDYY format)");
     }
