@@ -1,4 +1,4 @@
-package flooringmastery.dao;
+package com.flooringmastery.dao;
 
 public interface FlooringMasteryDao {
     

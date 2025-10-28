@@ -1,4 +1,4 @@
-package flooringmastery.view;
+package com.flooringmastery.view;
 
 public class FlooringMasteryView {
 
