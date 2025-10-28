@@ -49,6 +49,15 @@ public class FlooringMasteryView {
         io.print("  * Removes an existing order.");
     }
 
+    public void displayError(String message) {
+        io.print("Error: " + message);
+    }
+
+    public boolean askCancel() {
+        var response = io.readString("Type \"Y\" to try again, or leave blank to cancel the operation");
+        return (response.isBlank());
+    }
+
     public String getDate() {
         return io.readString("Enter date (MMDDYY format)");
     }
