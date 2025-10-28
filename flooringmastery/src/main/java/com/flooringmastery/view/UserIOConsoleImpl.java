@@ -3,6 +3,9 @@ package com.flooringmastery.view;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserIOConsoleImpl implements UserIO {
 
     private PrintStream out = System.out;

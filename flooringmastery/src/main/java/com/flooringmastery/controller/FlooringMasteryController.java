@@ -1,9 +1,16 @@
 package com.flooringmastery.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.flooringmastery.view.FlooringMasteryView;
 
 @Component
 public class FlooringMasteryController {
+
+    @Autowired
+    private FlooringMasteryView view;
+
     public void run() {
         while (true) {
             int op = chooseOperationMainMenu();
@@ -32,7 +39,7 @@ public class FlooringMasteryController {
     }
 
     private int chooseOperationMainMenu() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return view.getChoiceMainMenu();
     }
 
     private void displayOrders() {
