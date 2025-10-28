@@ -1,5 +1,7 @@
 package com.flooringmastery.view;
 
+import java.math.BigDecimal;
+
 public interface UserIO {
 
     void print(String message);
@@ -21,5 +23,9 @@ public interface UserIO {
     long readLong(String prompt);
 
     long readLong(String prompt, long min, long max);
+
+    BigDecimal readDecimal(String prompt);
+
+    BigDecimal readDecimal(String prompt, BigDecimal min, BigDecimal max);
 
 }

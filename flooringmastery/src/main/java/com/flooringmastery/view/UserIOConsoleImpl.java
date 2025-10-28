@@ -1,6 +1,7 @@
 package com.flooringmastery.view;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
@@ -157,4 +158,39 @@ public class UserIOConsoleImpl implements UserIO {
         } while (!isValid);
         return result;
     }
+
+    @Override
+    public BigDecimal readDecimal(String prompt) {
+        boolean isValid = false;
+        BigDecimal result = new BigDecimal(-1);
+
+        do { 
+            out.print(prompt + "  ::  ");
+            try {
+                result = new BigDecimal(in.next());
+                isValid = true;
+            } catch (NumberFormatException e) {
+                isValid = false;
+            }
+        } while (!isValid);
+        return result;
+    }
+
+    @Override
+    public BigDecimal readDecimal(String prompt, BigDecimal min, BigDecimal max) {
+        boolean isValid = false;
+        BigDecimal result = new BigDecimal(-1);
+
+        do { 
+            out.print(prompt + "  ::  ");
+            try {
+                result = new BigDecimal(in.next());
+                isValid = result.compareTo(min) >= 0 && result.compareTo(max) <= 0;
+            } catch (NumberFormatException e) {
+                isValid = false;
+            }
+        } while (!isValid);
+        return result;
+    }
+
 }
