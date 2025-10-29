@@ -9,7 +9,7 @@ public class Order {
     String customerName;
     String stateAbbr;
     BigDecimal taxRate;
-    Product productType;
+    Product product;
     BigDecimal area;
     BigDecimal costPerSqFt;
     BigDecimal laborCostPerSqFt;
@@ -58,12 +58,12 @@ public class Order {
         this.taxRate = taxRate;
     }
 
-    public Product getProductType() {
-        return productType;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductType(Product productType) {
-        this.productType = productType;
+    public void setProductType(Product product) {
+        this.product = product;
     }
 
     public BigDecimal getArea() {
