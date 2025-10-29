@@ -119,7 +119,11 @@ public class FlooringMasteryView {
         int min = 0 + offset;
         int max = products.size() - 1 + offset;
 
-        // Display list of products
+        for (int i = min; i <= max; i++) {
+            var p = products.get(i - offset);
+            io.print(MessageFormat.format("({0}): {1}    Cost per sq ft: {2}    Labor cost per sq ft: {3}",
+             i, p.getProductType(), p.getCostPerSquareFoot(), p.getLaborCostPerSquareFoot()));
+        }
 
         var choice = io.readInt(MessageFormat.format("Enter choice ({0}-{1})", min, max), min, max);
 
@@ -147,9 +151,7 @@ public class FlooringMasteryView {
     }
 
     public Optional<Product> editProduct(Product product, List<Product> allProducts) {
-
-        // Display current product here
-        String response = io.readString(MessageFormat.format("Type \"Y\" to choose a new product, or leave blank ({0})", "UNIMPLEMENTED"));
+        String response = io.readString(MessageFormat.format("Type \"Y\" to choose a new product, or leave blank ({0})", product.getProductType()));
         if (response.isBlank()) return Optional.empty();
         else return Optional.of(chooseProductType(allProducts));
     }
