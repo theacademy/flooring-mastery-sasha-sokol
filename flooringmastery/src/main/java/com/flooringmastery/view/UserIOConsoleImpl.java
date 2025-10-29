@@ -10,7 +10,14 @@ import org.springframework.stereotype.Component;
 public class UserIOConsoleImpl implements UserIO {
 
     private PrintStream out = System.out;
-    private Scanner in = new Scanner(System.in);
+    private Scanner in;
+
+    public UserIOConsoleImpl() {
+        in = new Scanner(System.in);
+        in.useDelimiter(System.lineSeparator());
+    }
+
+    
 
     @Override
     public void print(String message) {
