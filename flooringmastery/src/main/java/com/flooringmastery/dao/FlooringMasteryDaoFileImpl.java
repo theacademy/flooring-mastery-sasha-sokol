@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
     private static final String ORDERS_DIR = "sample/Orders/";
     private static final String DELIMITER = ",";
+
+    DecimalFormat df = new DecimalFormat("####.#########");  // Don't use commas!
 
     private static String fileName(String date) {
         return "Orders_" + date + ".txt";
@@ -92,15 +95,15 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
             o.getOrderNumber(),
             o.getCustomerName(),
             o.getStateAbbr(),
-            o.getTaxRate(),
+            df.format(o.getTaxRate()),
             o.getProduct().getProductType(),
-            o.getArea(),
-            o.getCostPerSqFt(),
-            o.getLaborCostPerSqFt(),
-            o.getMaterialCost(),
-            o.getLaborCost(),
-            o.getTax(),
-            o.getTotal());
+            df.format(o.getArea()),
+            df.format(o.getCostPerSqFt()),
+            df.format(o.getLaborCostPerSqFt()),
+            df.format(o.getMaterialCost()),
+            df.format(o.getLaborCost()),
+            df.format(o.getTax()),
+            df.format(o.getTotal()));
     }
 
     @Override
