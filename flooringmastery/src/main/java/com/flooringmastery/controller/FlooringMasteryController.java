@@ -238,7 +238,7 @@ public class FlooringMasteryController {
         } while (!finished);
 
         // Product
-        var newProduct = view.editProduct(order.getProductType(), products);
+        var newProduct = view.editProduct(order.getProduct(), products);
         if (newProduct.isPresent()) {
             order.setProductType(newProduct.get());
         }

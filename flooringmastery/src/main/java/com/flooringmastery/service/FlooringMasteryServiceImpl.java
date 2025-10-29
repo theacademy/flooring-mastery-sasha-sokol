@@ -110,15 +110,13 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
         var stateAbbr = order.getStateAbbr();
         order.setTaxRate(taxDao.getTaxRate(stateAbbr));
 
-        var product = order.getProductType();
-        var cpsf = productsDao.getCostPerSqFt(product);
-        var lcpsf = productsDao.getLaborCostPerSqFt(product);
-        order.setCostPerSqFt(cpsf);
-        order.setLaborCostPerSqFt(lcpsf);
+        var product = order.getProduct();
+        order.setCostPerSqFt(product.getCostPerSquareFoot());
+        order.setLaborCostPerSqFt(product.getLaborCostPerSquareFoot());
 
         var area = order.getArea();
-        order.setMaterialCost(area.multiply(cpsf));
-        order.setLaborCost(area.multiply(lcpsf));
+        order.setMaterialCost(area.multiply(order.getCostPerSqFt()));
+        order.setLaborCost(area.multiply(order.getLaborCostPerSqFt()));
 
         order.setTax(order.getMaterialCost().add(order.getLaborCost())
             .multiply(order.getTaxRate().divide(new BigDecimal(100))));
