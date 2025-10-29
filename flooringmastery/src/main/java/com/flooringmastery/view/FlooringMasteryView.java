@@ -17,6 +17,21 @@ public class FlooringMasteryView {
     @Autowired
     private UserIO io;
 
+    private void showOrder(Order o) {
+        io.print(MessageFormat.format("**    Date: {0}   Order number: {1}  **", o.getDate(), o.getOrderNumber()));
+        io.print("  Customer name: " + o.getCustomerName());
+        io.print("  State: " + o.getStateAbbr());
+        io.print("  Tax rate: " + o.getTaxRate());
+        io.print("  Product type: " + o.getProduct().getProductType());
+        io.print("  Area: " + o.getArea());
+        io.print("  Cost per sq ft: " + o.getCostPerSqFt());
+        io.print("  Labor Cost per sq ft: " + o.getLaborCostPerSqFt());
+        io.print("  Material cost: " + o.getMaterialCost());
+        io.print("  Labor cost: " + o.getLaborCost());
+        io.print("  Tax: " + o.getTax());
+        io.print("  Total: " + o.getTotal());
+    }
+
     public int getChoiceMainMenu() {
         io.print("  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
         io.print("  * <<Flooring Program>>");
@@ -61,25 +76,27 @@ public class FlooringMasteryView {
     }
 
     public void displayOrderList(List<Order> orders) {
-        // Display list of orders
+        for (Order order : orders) {
+            showOrder(order);
+        }
     }
 
     public boolean confirmAddOrder(Order order) {
-        // Display order
+        showOrder(order);
 
         var response = io.readString("Type \"Y\" to confirm order creation, or leave blank to cancel the operation");
         return (!response.isBlank());
     }
 
     public boolean confirmEditOrder(Order order) {
-        // Display order
+        showOrder(order);
 
         var response = io.readString("Type \"Y\" to save changes, or leave blank to cancel the operation");
         return (!response.isBlank());
     }
 
     public boolean confirmRemoveOrder(Order order) {
-        // Display order
+        showOrder(order);
 
         var response = io.readString("Type \"Y\" to confirm order deletion, or leave blank to cancel the operation");
         return (!response.isBlank());
