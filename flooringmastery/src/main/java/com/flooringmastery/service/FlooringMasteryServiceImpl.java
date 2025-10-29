@@ -8,10 +8,26 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.flooringmastery.dao.FlooringMasteryDao;
+import com.flooringmastery.dao.FlooringMasteryProductsDao;
+import com.flooringmastery.dao.FlooringMasteryTaxDao;
 import com.flooringmastery.dto.Order;
 import com.flooringmastery.dto.Product;
 
+@Component
 public class FlooringMasteryServiceImpl implements FlooringMasteryService {
+
+    @Autowired
+    FlooringMasteryDao dao;
+
+    @Autowired
+    FlooringMasteryProductsDao productsDao;
+
+    @Autowired
+    FlooringMasteryTaxDao taxDao;
 
     private final BigDecimal minimumOrderArea = new BigDecimal(100);
 
@@ -26,7 +42,12 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
 
     @Override
     public ValidationResponse validateExistingOrderDate(String date) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (parseDate(date).isEmpty())
+            return new ValidationResponse("Date not formatted correctly");
+        else if (dao.getOrdersByDate(date).isEmpty())
+            return new ValidationResponse("No orders for that date");
+        else
+            return new ValidationResponse();
     }
 
     @Override
@@ -55,7 +76,10 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
 
     @Override
     public ValidationResponse validateStateAbbr(String stateAbbr) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(!taxDao.exists(stateAbbr))
+            return new ValidationResponse(MessageFormat.format("Cannot sell to state {0}", stateAbbr));
+        else
+            return new ValidationResponse();
     }
 
     @Override
@@ -68,37 +92,54 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
 
     @Override
     public List<Product> getAllProducts() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return productsDao.getAll();
     }
 
     @Override
     public List<Order> getOrdersByDate(String date) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dao.getOrdersByDate(date);
     }
 
     @Override
     public Optional<Order> getSingleOrder(String date, int orderNumber) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dao.getOrder(date, orderNumber);
     }
 
     @Override
     public void calculateMissingFields(Order order) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        var stateAbbr = order.getStateAbbr();
+        order.setTaxRate(taxDao.getTaxRate(stateAbbr));
+
+        var product = order.getProductType();
+        var cpsf = productsDao.getCostPerSqFt(product);
+        var lcpsf = productsDao.getLaborCostPerSqFt(product);
+        order.setCostPerSqFt(cpsf);
+        order.setLaborCostPerSqFt(lcpsf);
+
+        var area = order.getArea();
+        order.setMaterialCost(area.multiply(cpsf));
+        order.setLaborCost(area.multiply(lcpsf));
+
+        order.setTax(order.getMaterialCost().add(order.getLaborCost())
+            .multiply(order.getTaxRate().divide(new BigDecimal(100))));
+
+        order.setTotal(order.getMaterialCost().add(order.getLaborCost())
+            .add(order.getTax()));
     }
 
     @Override
     public void createOrder(Order order) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        dao.create(order);
     }
 
     @Override
     public void updateOrder(Order order) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        dao.update(order);
     }
 
     @Override
     public void deleteOrder(Order order) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        dao.delete(order);
     }
 
 }
