@@ -22,7 +22,7 @@ import com.flooringmastery.dto.Order;
 @Component
 public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
-    private static final String ORDERS_DIR = "sample/Orders/";
+    private final String ORDERS_DIR;
     private static final String DELIMITER = ",";
 
     DecimalFormat df = new DecimalFormat("####.#########");  // Don't use commas!
@@ -36,8 +36,13 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
     @Autowired
     FlooringMasteryProductsDao productsDao;
 
-    public FlooringMasteryDaoFileImpl() throws FileNotFoundException {
+    public FlooringMasteryDaoFileImpl() {
+        ORDERS_DIR = "sample/Orders/";
+    }
 
+    public FlooringMasteryDaoFileImpl(String ordersDirectory, FlooringMasteryProductsDao productsDao) {
+        ORDERS_DIR = ordersDirectory;
+        this.productsDao = productsDao;
     }
 
     private List<Order> loadOrdersByDate(String date) throws FileNotFoundException {
