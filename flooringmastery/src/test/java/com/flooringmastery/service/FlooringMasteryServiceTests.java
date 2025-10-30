@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,6 +64,24 @@ public class FlooringMasteryServiceTests {
 
     @AfterEach
     public void tearDown() {
+    }
+
+    @Test
+    public void validCustomerName() {
+        var response = service.validateCustomerName("Bob Inc. 1999");
+        assertTrue(response.valid);
+    }
+
+    @Test
+    public void specialCharactersCustomerName() {
+        var response = service.validateCustomerName("Bob Inc. (1999)");
+        assertFalse(response.valid);
+    }
+
+    @Test
+    public void blankCustomerName() {
+        var response = service.validateCustomerName("");
+        assertFalse(response.valid);
     }
 
     @Test
