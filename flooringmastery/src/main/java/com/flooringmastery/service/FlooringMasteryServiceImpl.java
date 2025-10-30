@@ -74,8 +74,7 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
 
     @Override
     public ValidationResponse validateCustomerName(String name) {
-        String specialRegex = "[^a-zA-Z0-9. ]";  // Matches all characters except letters, digits, periods, commas, spaces
-
+        String specialRegex = ".*[^a-zA-Z0-9. ].*";  // Matches any string with a character except letters, numbers, periods, spaces
         if (name.isBlank())
             return new ValidationResponse("Name cannot be blank");
         else if (name.matches(specialRegex))
