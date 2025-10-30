@@ -31,6 +31,16 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
 
     private final BigDecimal minimumOrderArea = new BigDecimal(100);
 
+    public FlooringMasteryServiceImpl() {
+
+    }
+
+    public FlooringMasteryServiceImpl(FlooringMasteryDao dao, FlooringMasteryProductsDao productsDao, FlooringMasteryTaxDao taxDao) {
+        this.dao = dao;
+        this.productsDao = productsDao;
+        this.taxDao = taxDao;
+    }
+
     private Optional<LocalDate> parseDate(String s) {
         try {
             return Optional.of(LocalDate.parse(s, DateTimeFormatter.ofPattern("MMddyyyy")));
